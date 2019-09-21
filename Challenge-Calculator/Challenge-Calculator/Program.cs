@@ -12,22 +12,10 @@ namespace Challenge_Calculator
         {
 
             // Unit Tests
-            calculate("20");
-            Console.WriteLine("Expected result: 20");
             calculate("1,5000");
             Console.WriteLine("Expected result: 5001");
-            calculate("5000,-1");
-            Console.WriteLine("Expected result: 4999");
-            calculate("--,10");
-            Console.WriteLine("Expected result: 10");
-            calculate("abc,def");
-            Console.WriteLine("Expected result: 0");
-            calculate("1,2,3,4,5,6,7,8,9,10,11,12");
-            Console.WriteLine("Expected result: 78");
-            calculate("1\n2,3");
-            Console.WriteLine("Expected result: 6");
-            calculate("1\n\n2,,3");
-            Console.WriteLine("Expected result: 6");
+            calculate("5000,-1\n1,-500,4,-20");
+            Console.WriteLine("Expected result: Exception, negative numbers not allowed");
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -39,6 +27,7 @@ namespace Challenge_Calculator
             int result = 0;
             char[] delimiters = { ',', '\n' };
             string[] strTokens = inputString.Split(delimiters);
+            List<int> negativeNums = new List<int>(); 
             
             foreach (string str in strTokens)
             {
@@ -48,10 +37,20 @@ namespace Challenge_Calculator
                 {
                     num = 0;
                 }
+                else if (num < 0)
+                {
+                    negativeNums.Add(num);
+                    continue;
+                }
 
                 result += num;
             }
 
+            if (negativeNums.Count > 0)
+            {
+                throw new Exception("Negative numbers are not allowed: " + String.Join(", ", negativeNums.ToArray()));
+            }
+            
             Console.WriteLine("Result: " + result);
         }
     }
