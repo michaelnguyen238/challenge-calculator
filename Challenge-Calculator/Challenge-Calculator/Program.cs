@@ -22,8 +22,8 @@ namespace Challenge_Calculator
             Console.WriteLine("Expected result: 10");
             calculate("abc,def");
             Console.WriteLine("Expected result: 0");
-            calculate("10,20,30");
-            Console.WriteLine("Expected result: 30");
+            calculate("1,2,3,4,5,6,7,8,9,10,11,12");
+            Console.WriteLine("Expected result: 78");
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -33,25 +33,18 @@ namespace Challenge_Calculator
         static void calculate(string inputString)
         {
             int result = 0;
-            int itr = 0;
-            int maxNums = 2;
             string[] strTokens = inputString.Split(',');
             
             foreach (string str in strTokens)
             {
                 int num;
 
-                if (itr == maxNums)
-                {
-                    break;
-                }
-                else if (! int.TryParse(str, out num))
+                if (! int.TryParse(str, out num))
                 {
                     num = 0;
                 }
 
                 result += num;
-                itr++;
             }
 
             Console.WriteLine("Result: " + result);
