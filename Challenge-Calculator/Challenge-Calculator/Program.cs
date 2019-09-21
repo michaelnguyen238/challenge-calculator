@@ -12,8 +12,8 @@ namespace Challenge_Calculator
         {
 
             // Unit Tests
-            calculate("1,5000");
-            Console.WriteLine("Expected result: 1");
+            calculate("//;1,5000;2");
+            Console.WriteLine("Expected result: 3");
             calculate("5000,\n1,4,");
             Console.WriteLine("Expected result: 5");
             calculate("2,1001,6");
@@ -27,8 +27,15 @@ namespace Challenge_Calculator
         static void calculate(string inputString)
         {
             int result = 0;
-            char[] delimiters = { ',', '\n' };
-            string[] strTokens = inputString.Split(delimiters);
+            List<char> delimiters = new List<char>() { ',', '\n' };
+
+            // Check for custom delimiter, add it to delimiters if one exists
+            if (inputString.Substring(0,2) == "//")
+            {
+                delimiters.Add(inputString.ElementAt(2));
+            }
+            
+            string[] strTokens = inputString.Split(delimiters.ToArray());
             List<int> negativeNums = new List<int>(); 
             
             foreach (string str in strTokens)
