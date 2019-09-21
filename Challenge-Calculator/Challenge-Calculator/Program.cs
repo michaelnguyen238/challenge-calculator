@@ -12,12 +12,10 @@ namespace Challenge_Calculator
         {
 
             // Unit Tests
-            calculate("1,5000");
-            Console.WriteLine("Expected result: 1");
-            calculate("5000,\n1,4,");
-            Console.WriteLine("Expected result: 5");
-            calculate("2,1001,6");
-            Console.WriteLine("Expected result: 8");
+            calculate("//;\n2;5");
+            Console.WriteLine("Expected result: 7");
+            calculate("//;;;\n1,5000;2");
+            Console.WriteLine("Expected result: Error, delimiter is too long");
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -27,15 +25,34 @@ namespace Challenge_Calculator
         static void calculate(string inputString)
         {
             int result = 0;
-            char[] delimiters = { ',', '\n' };
-            string[] strTokens = inputString.Split(delimiters);
-            List<int> negativeNums = new List<int>(); 
-            
+            List<string> delimiters = new List<string>() { ",", "\n" };
+            if (inputString.Length == 0)
+            {
+                Console.WriteLine("Nothing to calculate!");
+                return;
+            }
+
+            // Check for custom delimiter, add it to delimiters if one exists
+            if (inputString.Length >= 4 && inputString.Substring(0, 2) == "//")
+            {
+                int delimEndIndex = inputString.IndexOf('\n');
+                string delimiter = inputString.Substring(2, delimEndIndex - 2);
+                if (delimiter.Length > 1)
+                {
+                    Console.WriteLine("The delimiter is too long: " + delimiter);
+                    return;
+                }
+                delimiters.Add(delimiter);
+            }
+
+            string[] strTokens = inputString.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            List<int> negativeNums = new List<int>();
+
             foreach (string str in strTokens)
             {
                 int num;
 
-                if (! int.TryParse(str, out num) || num > 1000)
+                if (!int.TryParse(str, out num) || num > 1000)
                 {
                     num = 0;
                 }
@@ -52,7 +69,7 @@ namespace Challenge_Calculator
             {
                 throw new Exception("Negative numbers are not allowed: " + String.Join(", ", negativeNums.ToArray()));
             }
-            
+
             Console.WriteLine("Result: " + result);
         }
     }
