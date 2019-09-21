@@ -13,9 +13,11 @@ namespace Challenge_Calculator
 
             // Unit Tests
             calculate("1,5000");
-            Console.WriteLine("Expected result: 5001");
-            calculate("5000,-1\n1,-500,4,-20");
-            Console.WriteLine("Expected result: Exception, negative numbers not allowed");
+            Console.WriteLine("Expected result: 1");
+            calculate("5000,\n1,4,");
+            Console.WriteLine("Expected result: 5");
+            calculate("2,1001,6");
+            Console.WriteLine("Expected result: 8");
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -33,7 +35,7 @@ namespace Challenge_Calculator
             {
                 int num;
 
-                if (! int.TryParse(str, out num))
+                if (! int.TryParse(str, out num) || num > 1000)
                 {
                     num = 0;
                 }
