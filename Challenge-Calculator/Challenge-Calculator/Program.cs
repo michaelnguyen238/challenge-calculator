@@ -24,6 +24,10 @@ namespace Challenge_Calculator
             Console.WriteLine("Expected result: 0");
             calculate("1,2,3,4,5,6,7,8,9,10,11,12");
             Console.WriteLine("Expected result: 78");
+            calculate("1\n2,3");
+            Console.WriteLine("Expected result: 6");
+            calculate("1\n\n2,,3");
+            Console.WriteLine("Expected result: 6");
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -33,7 +37,8 @@ namespace Challenge_Calculator
         static void calculate(string inputString)
         {
             int result = 0;
-            string[] strTokens = inputString.Split(',');
+            char[] delimiters = { ',', '\n' };
+            string[] strTokens = inputString.Split(delimiters);
             
             foreach (string str in strTokens)
             {
