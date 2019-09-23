@@ -12,10 +12,14 @@ namespace Challenge_Calculator
         {
 
             // Unit Tests
+            calculate("//[***]\n11***22***33");
+            Console.WriteLine("Expected result: 66"); // With brackets
             calculate("//;\n2;5");
-            Console.WriteLine("Expected result: 7");
-            calculate("//;;;\n1,5000;2");
-            Console.WriteLine("Expected result: Error, delimiter is too long");
+            Console.WriteLine("Expected result: 7"); // Without brackets (Single length delimiter only)
+            calculate("//[;;;\n1,5000;2,3");
+            Console.WriteLine("Expected result: 4"); // Without both brackets (; nor ;;; are recognized as delimiters, so the defaults are used)
+            calculate("//[;;;,2,abc;2,3"); 
+            Console.WriteLine("Expected result: 5"); // Does not follow format, no \n which results in bad tokens, { //[;;; } and { abc;2 }, so only 2 + 3 is evaluated
             // End Unit Tests
 
             Console.WriteLine("Press any key to continue.");
@@ -36,13 +40,17 @@ namespace Challenge_Calculator
             if (inputString.Length >= 4 && inputString.Substring(0, 2) == "//")
             {
                 int delimEndIndex = inputString.IndexOf('\n');
-                string delimiter = inputString.Substring(2, delimEndIndex - 2);
-                if (delimiter.Length > 1)
+                if (delimEndIndex > -1)
                 {
-                    Console.WriteLine("The delimiter is too long: " + delimiter);
-                    return;
+                    string delimiter = inputString.Substring(2, delimEndIndex - 2);
+                    int leftBracketIndex = delimiter.IndexOf('[');
+                    int rightBracketIndex = delimiter.IndexOf(']');
+                    if (leftBracketIndex == 0 && rightBracketIndex >= 0)
+                    {
+                        delimiter = delimiter.Substring(1, rightBracketIndex - 1);
+                    }
+                    delimiters.Add(delimiter);
                 }
-                delimiters.Add(delimiter);
             }
 
             string[] strTokens = inputString.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
