@@ -10,26 +10,38 @@ namespace Challenge_Calculator
     {
         static void Main(string[] args)
         {
+            displayHelp();
 
-            // Unit Tests
-            calculate("//;\n2;5");
-            Console.WriteLine("Expected result: 7"); // Without brackets (Single length delimiter only)
-            calculate("//[*][!!][r9r]\n11r9r22*33!!44");
-            Console.WriteLine("Expected result: 110"); // Multiple delimiters with brackets
-            calculate("//[***]\n11***22***33");
-            Console.WriteLine("Expected result: 66"); // With brackets            
-            calculate("//[;;;\n1,5000;2,3");
-            Console.WriteLine("Expected result: 4"); // Without both brackets (; nor ;;; are recognized as delimiters, so the defaults are used)
-            calculate("//[;;;,2,abc;2,3");
-            Console.WriteLine("Expected result: 5"); // Does not follow format, no \n which results in bad tokens, { //[;;; } and { abc;2 }, so only 2 + 3 is evaluated
-            calculate("//[*][!!][r9r]\n11r9r22*33!!44");
-            Console.WriteLine("Expected result: 110"); // Multiple delimiters with brackets
-            calculate("//[[*]][!!][r9r]\n11r9r22*33!!44");
-            Console.WriteLine("Expected result: Error, nested brackets not allowed"); // Reject input strings that contain nested bracket delimiters
-            // End Unit Tests
+            bool continueCalculating = true;
+            string inputString = "";
 
-            Console.WriteLine("Press any key to continue.");
-            Console.ReadKey();
+            while (continueCalculating)
+            {
+                Console.Write("Enter formula: ");
+                inputString = Console.ReadLine();                
+                if (inputString != null)
+                {
+                    inputString = inputString.Replace("\\n", "\n");
+                    if (inputString.ToLower() == "help")
+                    {
+                        displayHelp();
+                    }
+                    else
+                    {
+                        calculate(inputString);
+                    }
+                }                                    
+            }            
+        }
+
+        static void displayHelp()
+        {
+            Console.WriteLine("Enter a string of the format:");
+            Console.WriteLine("(Default delimiters of ',' and '\\n')    {numbers}");
+            Console.WriteLine("(Single length delimiter)                //{delimiter}\\n{numbers}");
+            Console.WriteLine("(Any length delimiter)                   //[{delimiter}]\\n{numbers}");
+            Console.WriteLine("(Multiple delimiters of any length)      //[{delimiter1}][{delimiter2}]...\\n{numbers}\n");
+            Console.WriteLine("Enter 'help' instead of a formula to display these instructions again. Use ctrl+c to exit.\n");
         }
 
         static void calculate(string inputString)
