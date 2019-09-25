@@ -80,6 +80,7 @@ namespace Challenge_Calculator
 
             string[] strTokens = inputString.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries);
             List<int> negativeNums = new List<int>();
+            string displayFormula = "";
 
             foreach (string str in strTokens)
             {
@@ -96,6 +97,7 @@ namespace Challenge_Calculator
                 }
 
                 result += num;
+                displayFormula += num + "+";
             }
 
             if (negativeNums.Count > 0)
@@ -103,7 +105,16 @@ namespace Challenge_Calculator
                 throw new Exception("Negative numbers are not allowed: " + String.Join(", ", negativeNums.ToArray()));
             }
 
-            Console.WriteLine("Result: " + result);
+            
+            if (displayFormula.Length > 1)
+            {
+                Console.WriteLine("Result: " + displayFormula.Substring(0, displayFormula.Length - 1) + " = " + result);
+            }
+            else
+            {
+                Console.WriteLine("Result: " + result);
+            }
+            
         }
     }
 }
