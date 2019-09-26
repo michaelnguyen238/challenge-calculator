@@ -10,7 +10,8 @@ namespace Challenge_Calculator
     {
         static void Main(string[] args)
         {
-            displayHelp();
+            Tuple<string, bool, int> arguments = defineArguments();
+            displayHelp(arguments.Item1);
 
             bool continueCalculating = true;
             string inputString = "";
@@ -24,30 +25,64 @@ namespace Challenge_Calculator
                     inputString = inputString.Replace("\\n", "\n");
                     if (inputString.ToLower() == "help")
                     {
-                        displayHelp();
+                        displayHelp(arguments.Item1);
+                    }
+                    else if (inputString.ToLower() == "args")
+                    {
+                        arguments = defineArguments();
                     }
                     else
                     {
-                        calculate(inputString);
+                        calculate(inputString, arguments);
                     }
                 }                                    
             }            
         }
 
-        static void displayHelp()
+        static void displayHelp(string alternateDelim)
         {
             Console.WriteLine("Enter a string of the format:");
-            Console.WriteLine("(Default delimiters of ',' and '\\n')    {numbers}");
+            Console.WriteLine("(Use default delimiters of ',' and user-defined delimiter)    {numbers}");
             Console.WriteLine("(Single length delimiter)                //{delimiter}\\n{numbers}");
             Console.WriteLine("(Any length delimiter)                   //[{delimiter}]\\n{numbers}");
             Console.WriteLine("(Multiple delimiters of any length)      //[{delimiter1}][{delimiter2}]...\\n{numbers}\n");
-            Console.WriteLine("Enter 'help' instead of a formula to display these instructions again. Use ctrl+c to exit.\n");
+            Console.WriteLine("Enter 'help' instead of a formula to display these instructions again. Enter 'args' to change arguments.\nUse ctrl+c to exit.\n");
         }
 
-        static void calculate(string inputString)
+        static Tuple<string,bool,int> defineArguments()
         {
+            string altDelimiter = "";
+            bool allowNegatives = false;
+            int upperBound;
+            // Define arguments
+            Console.Write("Enter an alternate delimiter (single character) [\\n]: ");
+            altDelimiter = Console.ReadLine();
+            if (altDelimiter == "" || altDelimiter.Length > 1)
+            {
+                altDelimiter = "\n";
+            }
+            Console.Write("Allow negatives? [y/N]: ");
+            if (Console.ReadLine().ToLower() == "y")
+            {
+                allowNegatives = true;
+            }
+            Console.Write("Define number limit [1000]: ");
+            if (!int.TryParse(Console.ReadLine(), out upperBound))
+            {
+                upperBound = 1000;
+            }
+
+            return new Tuple<string, bool, int>(altDelimiter, allowNegatives, upperBound);
+        }
+
+        static void calculate(string inputString, Tuple<string,bool,int> arguments)
+        {
+            string altDelimiter = arguments.Item1;
+            bool allowNegatives = arguments.Item2;
+            int upperBound = arguments.Item3;
+
             int result = 0;
-            List<string> delimiters = new List<string>() { ",", "\n" };
+            List<string> delimiters = new List<string>() { ",", altDelimiter };
             if (inputString.Length == 0)
             {
                 Console.WriteLine("Nothing to calculate!");
@@ -98,11 +133,11 @@ namespace Challenge_Calculator
             {
                 int num;
 
-                if (!int.TryParse(str, out num) || num > 1000)
+                if (!int.TryParse(str, out num) || num > upperBound)
                 {
                     num = 0;
                 }
-                else if (num < 0)
+                else if (!allowNegatives && num < 0)
                 {
                     negativeNums.Add(num);
                     continue;
