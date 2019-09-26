@@ -42,10 +42,10 @@ namespace Challenge_Calculator
         static void displayHelp(string alternateDelim)
         {
             Console.WriteLine("Enter a string of the format:");
-            Console.WriteLine("(Use default delimiters of ',' and user-defined delimiter)    {numbers}");
-            Console.WriteLine("(Single length delimiter)                //{delimiter}\\n{numbers}");
-            Console.WriteLine("(Any length delimiter)                   //[{delimiter}]\\n{numbers}");
-            Console.WriteLine("(Multiple delimiters of any length)      //[{delimiter1}][{delimiter2}]...\\n{numbers}\n");
+            Console.WriteLine("(Use default delimiters of ',' and user-defined delimiter)   {numbers}");
+            Console.WriteLine("(Single length delimiter)                                    //{delimiter}\\n{numbers}");
+            Console.WriteLine("(Any length delimiter)                                       //[{delimiter}]\\n{numbers}");
+            Console.WriteLine("(Multiple delimiters of any length)                          //[{delimiter1}][{delimiter2}]...\\n{numbers}\n");
             Console.WriteLine("Enter 'help' instead of a formula to display these instructions again. Enter 'args' to change arguments.\nUse ctrl+c to exit.\n");
         }
 
