@@ -30,9 +30,9 @@ Create a calculator that only supports an Add operation given a single formatted
 	* all previous formats should also be supported
 
 ## Stretch goals
-[x] Display the formula used to calculate the result e.g. `2,4,rrrr,1001,6` will return `2+4+0+0+6 = 12`
-[x] Allow the application to process entered entries until Ctrl+C is used
-[x] Allow the acceptance of arguments to define...
+1. Display the formula used to calculate the result e.g. `2,4,rrrr,1001,6` will return `2+4+0+0+6 = 12`
+2. Allow the application to process entered entries until Ctrl+C is used
+3. Allow the acceptance of arguments to define...
 	* alternate delimiter in step #3 
 	* toggle whether to deny negative numbers in step #4
 	* upper bound in step #5
